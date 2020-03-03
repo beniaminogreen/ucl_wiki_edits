@@ -40,7 +40,7 @@ class TweetThread(threading.Thread):
                 print(tweet.keys())
             else:
                 edit_url = f"{base_url}/w/index.php?&diff={new}&oldid={old}"
-                tweet = f"someone from UCL anonymously edited '{title}': {edit_url}"
+                tweet = f"Someone from UCL anonymously edited '{title}': {edit_url}"
                 try:
                     self.api.update_status(tweet)
                     print(f"tweeted: '{tweet}'")
@@ -80,6 +80,7 @@ class ListenerThread(threading.Thread):
                     if not change['bot'] and change['type'] == "edit" and self.pats.match(change['user']):
                         self.out_queue.put(change)
 
+print('started up')
 tweets_queue = queue.Queue()
 
 listener_th = ListenerThread(tweets_queue)
