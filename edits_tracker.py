@@ -51,14 +51,15 @@ class TweetThread(threading.Thread):
 class ListenerThread(threading.Thread):
     def __init__(self, out_queue):
         #UCL wifi IP Adresses
+        #https://www.ucl.ac.uk/isd/services/get-connected/wired-networks/about-wired-networks/ucl-internet-protocol-ip-addresses
+        #https://www.ucl.ac.uk/isd/services/get-connected/wi-fi-wireless-networks#
         re_list = [
                 "28.40.0.\d{1,2}",
                 "128.41.0.\d{1,2}",
                 "144.82.0.\d{1,2}",
                 "193.60.(221|224).\d{1,2}",
                 "212.219.75.\d{1,2}",
-                "144.82.[89].\d{1,3}",
-                #"\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}"
+                "144.82.[89].\d{1,3}"
         ]
 
         self.pats = re.compile("^(" + "|".join(re_list)+")$")
@@ -68,7 +69,7 @@ class ListenerThread(threading.Thread):
         self.out_queue = out_queue
 
     def run(self):
-        #SSE Code from:
+        #SSE example code from:
         #https://github.com/ebraminio/aiosseclient
         for event in EventSource(self.url):
             if event.event == 'message':
@@ -79,6 +80,7 @@ class ListenerThread(threading.Thread):
                 else:
                     if not change['bot'] and change['type'] == "edit" and self.pats.match(change['user']):
                         self.out_queue.put(change)
+                        print('tweeted')
 
 tweets_queue = queue.Queue()
 
