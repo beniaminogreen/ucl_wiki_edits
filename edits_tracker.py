@@ -25,7 +25,6 @@ class TweetThread(threading.Thread):
 
             threading.Thread.__init__(self)
             self.queue = queue
-
     def run(self):
         while True:
             tweet = self.queue.get()
@@ -81,7 +80,6 @@ class ListenerThread(threading.Thread):
                     if not change['bot'] and change['type'] == "edit":
                         if any(regex.match(change['user']) for regex in self.re_list):
                             self.out_queue.put(change)
-                            print('tweeted')
 
 print('started up')
 tweets_queue = queue.Queue()
