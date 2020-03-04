@@ -54,15 +54,15 @@ class ListenerThread(threading.Thread):
         #https://www.ucl.ac.uk/isd/services/get-connected/wired-networks/about-wired-networks/ucl-internet-protocol-ip-addresses
         #https://www.ucl.ac.uk/isd/services/get-connected/wi-fi-wireless-networks#
         re_list = [
-                "28.40.0.\d{1,2}",
-                "128.41.0.\d{1,2}",
-                "144.82.0.\d{1,2}",
-                "193.60.(221|224).\d{1,2}",
-                "212.219.75.\d{1,2}",
-                "144.82.[89].\d{1,3}"
+                r"28\.40\.0\.\d{1,2}",
+                r"128\.41\.0\.\d{1,2}",
+                r"144\.82\.0\.\d{1,2}",
+                r"193\.60\.(221|224)\.\d{1,2}",
+                r"212\.219\.75\.\d{1,2}",
+                r"144\.82\.[89]\.\d{1,3}"
         ]
+        self.re_list = [re.compile(string) for string in re_list]
 
-        self.pats = re.compile("^(" + "|".join(re_list)+")$")
         self.url = 'https://stream.wikimedia.org/v2/stream/recentchange'
 
         threading.Thread.__init__(self)
@@ -78,9 +78,10 @@ class ListenerThread(threading.Thread):
                 except ValueError:
                     print("SSE client error: Can't make json")
                 else:
-                    if not change['bot'] and change['type'] == "edit" and self.pats.match(change['user']):
-                        self.out_queue.put(change)
-                        print('tweeted')
+                    if not change['bot'] and change['type'] == "edit":
+                        if any(regex.match(change['user']) for regex in self.re_list):
+                            self.out_queue.put(change)
+                            print('tweeted')
 
 tweets_queue = queue.Queue()
 
