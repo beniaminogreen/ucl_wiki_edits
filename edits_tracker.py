@@ -59,8 +59,7 @@ class ListenerThread(threading.Thread):
                 r"144\.82\.0\.\d{1,2}",
                 r"193\.60\.(221|224)\.\d{1,2}",
                 r"212\.219\.75\.\d{1,2}",
-                r"144\.82\.[89]\.\d{1,3}",
-                r"2A00:23C4:799A:9C00:E77E:ED1F:A038:E423"
+                r"144\.82\.[89]\.\d{1,3}"
         ]
         self.re_list = [re.compile(string) for string in re_list]
 
