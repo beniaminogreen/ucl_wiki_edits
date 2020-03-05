@@ -12,12 +12,13 @@ class TweetThread(threading.Thread):
         #Setup from:
         #https://github.com/eeevanbbb/UniversityEdits/blob/master/tweet.py
         try:
-            consumer_key = os.getenv("TWITTER_CONSUMER_KEY")
-            consumer_secret = os.getenv("TWITTER_CONSUMER_SECRET")
-            access_token = os.getenv("TWITTER_ACCESS_TOKEN")
-            access_secret = os.getenv("TWITTER_ACCESS_SECRET")
+            consumer_key = os.environ["TWITTER_CONSUMER_KEY"]
+            consumer_secret = os.environ["TWITTER_CONSUMER_SECRET"]
+            access_token = os.environ["TWITTER_ACCESS_TOKEN"]
+            access_secret = os.environ["TWITTER_ACCESS_SECRET"]
         except KeyError:
-            print("Enviroment variables missing")
+            print("Error: Twitter API keys missing from environment")
+            exit(1)
         else:
             auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
             auth.set_access_token(access_token, access_secret)
