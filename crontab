@@ -1,0 +1,3 @@
+* * * * * flock -n /tmp/UCL_edits.lockfile /home/beniamino/ucl_wiki_edits/edits_tracker.py
+@reboot git -C /home/beniamino/ucl_wiki_edits/ pull
+@daily git -C /home/beniamino/ucl_wiki_edits/ pull
