@@ -82,15 +82,19 @@ class ListenerThread(threading.Thread):
                         if any(regex.match(change['user']) for regex in self.re_list):
                             self.out_queue.put(change)
 
-print('started up')
-tweets_queue = queue.Queue()
+def main():
+    print('started up')
+    tweets_queue = queue.Queue()
 
-listener_th = ListenerThread(tweets_queue)
-listener_th.setDaemon(True)
-listener_th.start()
+    listener_th = ListenerThread(tweets_queue)
+    listener_th.setDaemon(True)
+    listener_th.start()
 
-tweet_th = TweetThread(tweets_queue)
-tweet_th.setDaemon(True)
-tweet_th.start()
+    tweet_th = TweetThread(tweets_queue)
+    tweet_th.setDaemon(True)
+    tweet_th.start()
 
-listener_th.join()
+    listener_th.join()
+
+if __name__ == "__main__":
+    main()
